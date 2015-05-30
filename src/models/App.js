@@ -10,13 +10,13 @@ window.App = (function(superClass) {
   }
 
   App.prototype.initialize = function() {
-    var deck;
+    var deck, game;
     this.set('deck', deck = new Deck());
     this.set('playerHand', deck.dealPlayer());
     this.set('dealerHand', deck.dealDealer());
-    return this.set('game', new Game({
-      'playerHand': this.get('playerHand'),
-      'dealerHand': this.get('dealerHand')
+    return this.set('game', game = new Game({
+      playerHand: this.get('playerHand'),
+      dealerHand: this.get('dealerHand')
     }));
   };
 

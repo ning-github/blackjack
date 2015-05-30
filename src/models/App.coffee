@@ -3,9 +3,10 @@
 class window.App extends Backbone.Model
   initialize: ->
     @set 'deck', deck = new Deck()
+    # deck.dealPlayer is an instance of Hand (dealplayer is a function of Deck that invokes new Hand())
     @set 'playerHand', deck.dealPlayer()
     @set 'dealerHand', deck.dealDealer()
-    @set 'game', new Game(
-      'playerHand': @get 'playerHand'
-      'dealerHand': @get 'dealerHand'
+    @set 'game', game = new Game(
+      playerHand: @get 'playerHand'
+      dealerHand: @get 'dealerHand'
       )

@@ -9,22 +9,16 @@ window.Game = (function(superClass) {
     return Game.__super__.constructor.apply(this, arguments);
   }
 
-  Game.prototype.initialize = function(playerHand, dealerHand) {
-    this.playerHand = playerHand;
-    this.dealerHand = dealerHand;
-    return this.get('playerHand').on('add', this.checkPlayerScore, this);
+  Game.prototype.initialize = function() {
+    var deck;
+    this.set('deck', deck = new Deck());
+    this.set('playerHand', deck.dealPlayer());
+    return this.set('dealerHand', deck.dealDealer());
   };
 
-  Game.prototype.checkPlayerScore = function() {
-    var handScores;
-    handScores = this.get('playerHand').scores();
-    if (handScores[0] === 21 || handScores[1] === 21) {
-      console.log('win');
-      return this.trigger('win');
-    } else if (Math.min.apply(null, handScores) > 21) {
-      console.log('busted');
-      return this.trigger('busted');
-    }
+  Game.prototype.listen = function() {
+    this.get('playerHand').on('busted');
+    return this.get('playerHand').on('stand');
   };
 
   return Game;

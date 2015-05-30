@@ -20,7 +20,13 @@ window.Hand = (function(superClass) {
     var temp;
     temp = this.deck.pop();
     this.add(temp);
-    return temp;
+    if (minScore() > 21) {
+      return this.trigger('busted');
+    }
+  };
+
+  Hand.prototype.stand = function() {
+    return this.trigger('stand');
   };
 
   Hand.prototype.hasAce = function() {
@@ -37,6 +43,21 @@ window.Hand = (function(superClass) {
 
   Hand.prototype.scores = function() {
     return [this.minScore(), this.minScore() + 10 * this.hasAce()];
+  };
+
+  Hand.prototype.bestScore = function() {
+    if (this.scores()[1] === 21) {
+      return this.scores[1];
+    } else {
+      return Math.max.apply(null, this.scores());
+    }
+  };
+
+  Hand.prototype.dealerHit = function() {
+    while (this.bestScore() < 17) {
+      this.hit();
+    }
+    return this.stand();
   };
 
   return Hand;
