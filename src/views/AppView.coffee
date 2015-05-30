@@ -11,10 +11,16 @@ class window.AppView extends Backbone.View
 
   initialize: ->
     @render()
+    @listenTo @model.get('game'), 'win busted', @model.get('game').disable
+    @listenTo @model, 'rerender', @render
+    # @model.on 'rerender change'
 
   render: ->
+    console.log "it was called"
     @$el.children().detach()
     @$el.html @template()
     @$('.player-hand-container').html new HandView(collection: @model.get 'playerHand').el
     @$('.dealer-hand-container').html new HandView(collection: @model.get 'dealerHand').el
+
+  rerender: ->
 
