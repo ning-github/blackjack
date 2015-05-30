@@ -9,9 +9,9 @@ class window.AppView extends Backbone.View
     'click .stand-button': -> @model.get('playerHand').stand()
 
   initialize: =>
-    @render()
-    @listenTo @model.get('game'), 'win busted', @model.get('game').disable
     @listenTo @model, 'rerender', @render
+    @listenTo @model.get('game'), 'win busted', @model.get('game').disable
+    @render()
 
     # @model.on 'rerender change'
 
