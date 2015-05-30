@@ -8,12 +8,12 @@ class window.Game extends Backbone.Model
     handScores = @get('playerHand').scores()
     # if @this is player or dealer
     if Math.min.apply(null, handScores) == 21
-      console.log 'win'
+      alert 'win'
       @trigger 'win'
       # set some end of game flag
     else if Math.min.apply(null, handScores) > 21
+      alert 'bust'
       @trigger 'busted'
-      console.log 'bust'
       # set some end of game flag
 
   disable: ->
