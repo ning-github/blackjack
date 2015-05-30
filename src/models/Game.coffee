@@ -1,6 +1,15 @@
 class window.Game extends Backbone.Model
   initialize: ->
     @set 'deck', deck = new Deck()
+    # deck should always be on the lookout for when it
+    # is running low (after each removal via .pop())
+    @get('deck').on 'remove', ->
+      if @get('deck').length == 0
+        console.log ('no more cards! reshuffling!')
+        # have to initialize this new deck (decks are shuffle during init)
+        @get('deck').initialize()
+    , @
+
     # listen is what actually deals new Hands
     @listen()
 

@@ -12,6 +12,12 @@ window.Game = (function(superClass) {
   Game.prototype.initialize = function() {
     var deck;
     this.set('deck', deck = new Deck());
+    this.get('deck').on('remove', function() {
+      if (this.get('deck').length === 0) {
+        console.log('no more cards! reshuffling!');
+        return this.get('deck').initialize();
+      }
+    }, this);
     return this.listen();
   };
 
