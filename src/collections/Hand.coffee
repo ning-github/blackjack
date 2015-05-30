@@ -11,7 +11,6 @@ class window.Hand extends Backbone.Collection
     #   a win trigger isn't needed since you would eventually stand
     if minScore() > 21 then @trigger 'busted'
 
-
   # stand function
   stand: ->
     @trigger 'stand'
@@ -38,4 +37,9 @@ class window.Hand extends Backbone.Collection
 
   bestScore: ->
     if @scores()[1] == 21 then @scores[1] else Math.max.apply(null, @scores())
+
+  dealerHit: ->
+    while @bestScore() < 17
+      @hit()
+    @stand()
 
