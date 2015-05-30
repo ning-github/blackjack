@@ -4,23 +4,17 @@ class window.AppView extends Backbone.View
     <div class="player-hand-container"></div>
     <div class="dealer-hand-container"></div>
   '
+
   events:
     'click .hit-button': -> @model.get('playerHand').hit()
     'click .stand-button': -> @model.get('playerHand').stand()
 
-  initialize: =>
-    @listenTo @model, 'rerender', @render
-    @listenTo @model.get('game'), 'win busted', @model.get('game').disable
+  initialize: ->
     @render()
 
-    # @model.on 'rerender change'
-
-  render: =>
-    console.log "it was called"
+  render: ->
     @$el.children().detach()
     @$el.html @template()
     @$('.player-hand-container').html new HandView(collection: @model.get 'playerHand').el
     @$('.dealer-hand-container').html new HandView(collection: @model.get 'dealerHand').el
-
-  rerender: ->
 
