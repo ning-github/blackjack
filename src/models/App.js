@@ -9,17 +9,6 @@ window.App = (function(superClass) {
     return App.__super__.constructor.apply(this, arguments);
   }
 
-  App.prototype.initialize = function() {
-    var deck, game;
-    this.set('deck', deck = new Deck());
-    this.set('playerHand', deck.dealPlayer());
-    this.set('dealerHand', deck.dealDealer());
-    return this.set('game', game = new Game({
-      playerHand: this.get('playerHand'),
-      dealerHand: this.get('dealerHand')
-    }));
-  };
-
   return App;
 
-})(Backbone.Model);
+})(Game);

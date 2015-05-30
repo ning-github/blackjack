@@ -2,20 +2,50 @@ class window.Game extends Backbone.Model
   initialize: ->
     @set 'deck', deck = new Deck()
     # deck has methods that are invokations of Hand (for player and dealer)
-    @set 'playerHand', deck.dealPlayer()
-    @set 'dealerHand', deck.dealDealer()
+    # @set 'playerHand', deck.dealPlayer()
+    # @set 'dealerHand', deck.dealDealer()
+    @listen()
 
 
   # a function that can listen for everything
   listen: ->
+    # deck has methods that are invokations of Hand (for player and dealer)
+    # this is so that when listen is called again, new hands are dealt out 
+    # (it's like re-initializing but with same deck)
+    @set 'playerHand', @get('deck').dealPlayer()
+    @set 'dealerHand', @get('deck').dealDealer()
+
     # if player busted or stood
-    @get('playerHand').on 'busted'
-    @get('playerHand').on 'stand'
+    @get('playerHand').on 'busted', @lose, @
+    @get('playerHand').on 'stand', ->
+      @get('dealerHand').dealerPlay()
+    , @
       # if the player stands, it is time to begin dealerHit
 
     # if dealer busted, player wins
+    @get('dealerHand').on 'busted', @win
 
     # if dealer stands, time to compare player bestScore to dealer bestScore
+    @get('dealerHand').on 'stand', @compare, @
+
+  lose: ->
+    console.log 'you lose!'
+    @listen
+
+  win: ->
+    console.log 'you win!'
+    @listen
+
+
+
+  compare: ->
+    playerScore = @get('playerHand').bestScore()
+    dealerScore = @get('dealerHand').bestScore()
+    if playerScore > dealerScore then @win()
+    if playerScore == dealerScore then console.log 'push'
+    if playerScore < dealerScore then @lose()
+    @listen
+
 
 
 

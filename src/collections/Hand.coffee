@@ -9,7 +9,7 @@ class window.Hand extends Backbone.Collection
     @add(temp)
     # trigger bust if your lowest possible score goes over
     #   a win trigger isn't needed since you would eventually stand
-    if minScore() > 21 then @trigger 'busted'
+    if @minScore() > 21 then @trigger 'busted'
 
   # stand function
   stand: ->
@@ -36,10 +36,13 @@ class window.Hand extends Backbone.Collection
     [@minScore(), @minScore() + 10 * @hasAce()]
 
   bestScore: ->
-    if @scores()[1] == 21 then @scores[1] else Math.max.apply(null, @scores())
+    if @scores()[1] == 21 then @scores()[1] else @scores()[0]
 
-  dealerHit: ->
-    while @bestScore() < 17
-      @hit()
-    @stand()
-
+  dealerPlay: ->
+    console.log 'dealer turn now'
+    # reveal card
+    @at(0).flip()
+    # hit until  17
+    @hit() while @minScore() < 17
+    if @bestScore() < 22
+      @stand()
