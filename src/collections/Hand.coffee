@@ -36,7 +36,7 @@ class window.Hand extends Backbone.Collection
     [@minScore(), @minScore() + 10 * @hasAce()]
 
   bestScore: ->
-    if @scores()[1] == 21 then @scores()[1] else @scores()[0]
+    if @scores()[1] <=21 then @scores()[1] else @scores()[0]
 
   dealerPlay: ->
     console.log 'dealer turn now'

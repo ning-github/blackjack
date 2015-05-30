@@ -24,8 +24,15 @@ window.AppView = (function(superClass) {
 
   AppView.prototype.initialize = function() {
     this.render();
-    this.model.get('playerHand').on('busted', this.initialize, this);
-    return this.model.get('dealerHand').on('busted', this.initialize, this);
+    this.model.get('playerHand').on('busted', function() {
+      return this.initialize();
+    }, this);
+    this.model.get('dealerHand').on('busted', function() {
+      return this.initialize();
+    }, this);
+    return this.model.get('dealerHand').on('stand', function() {
+      return this.initialize();
+    }, this);
   };
 
   AppView.prototype.render = function() {

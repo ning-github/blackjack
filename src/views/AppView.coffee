@@ -11,9 +11,15 @@ class window.AppView extends Backbone.View
 
   initialize: =>
     @render()
-    @model.get('playerHand') .on 'busted', @initialize, @
-    @model.get('dealerHand') .on 'busted', @initialize, @
-
+    @model.get('playerHand') .on 'busted', ->
+      @initialize()
+    , @
+    @model.get('dealerHand') .on 'busted', ->
+      @initialize()
+    , @  
+    @model.get('dealerHand') .on 'stand', ->
+      @initialize()
+    , @
 
   render: ->
     @$el.children().detach()

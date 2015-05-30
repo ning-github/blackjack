@@ -18,38 +18,32 @@ window.Game = (function(superClass) {
   Game.prototype.listen = function() {
     this.set('playerHand', this.get('deck').dealPlayer());
     this.set('dealerHand', this.get('deck').dealDealer());
-    this.get('playerHand').on('busted', this.lose, this);
+    this.get('playerHand').on('busted', function() {
+      console.log('you bustedddd, YOU LOSE');
+      return this.listen();
+    }, this);
     this.get('playerHand').on('stand', function() {
       return this.get('dealerHand').dealerPlay();
     }, this);
-    this.get('dealerHand').on('busted', this.win);
-    return this.get('dealerHand').on('stand', this.compare, this);
-  };
-
-  Game.prototype.lose = function() {
-    console.log('you lose!');
-    return this.listen;
-  };
-
-  Game.prototype.win = function() {
-    console.log('you win!');
-    return this.listen;
-  };
-
-  Game.prototype.compare = function() {
-    var dealerScore, playerScore;
-    playerScore = this.get('playerHand').bestScore();
-    dealerScore = this.get('dealerHand').bestScore();
-    if (playerScore > dealerScore) {
-      this.win();
-    }
-    if (playerScore === dealerScore) {
-      console.log('push');
-    }
-    if (playerScore < dealerScore) {
-      this.lose();
-    }
-    return this.listen;
+    this.get('dealerHand').on('busted', function() {
+      console.log('dealer busted, YOU WIN!!');
+      return this.listen();
+    }, this);
+    return this.get('dealerHand').on('stand', function() {
+      var dealerScore, playerScore;
+      playerScore = this.get('playerHand').bestScore();
+      dealerScore = this.get('dealerHand').bestScore();
+      if (playerScore > dealerScore) {
+        console.log('your hand is higher! YOU WIN');
+      }
+      if (playerScore === dealerScore) {
+        console.log('push');
+      }
+      if (playerScore < dealerScore) {
+        console.log('your hand is lower. YOU LOSE');
+      }
+      return this.listen();
+    }, this);
   };
 
   return Game;

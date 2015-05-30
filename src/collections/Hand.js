@@ -46,7 +46,7 @@ window.Hand = (function(superClass) {
   };
 
   Hand.prototype.bestScore = function() {
-    if (this.scores()[1] === 21) {
+    if (this.scores()[1] <= 21) {
       return this.scores()[1];
     } else {
       return this.scores()[0];
